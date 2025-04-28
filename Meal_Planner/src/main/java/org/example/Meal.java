@@ -1,11 +1,12 @@
 package org.example;
 
-public abstract class Meal {
-    protected String category;
-    protected String name;
-    protected String[] ingredients;
+public class Meal {
+    private String category;
+    private String name;
+    private String[] ingredients;
 
-    Meal(String name, String[] ingredients) {
+    Meal(String category, String name, String[] ingredients) {
+        this.category = category;
         this.name = name;
         this.ingredients = ingredients;
     }
