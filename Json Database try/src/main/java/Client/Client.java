@@ -61,7 +61,7 @@ public class Client {
         System.out.println("Client started!");
         Socket socket = new Socket("localhost", 1234);
         Client client = new Client(socket);
-        System.out.println("gagagag");
+
         String command = new CommandParser(args).serializeToJson();
         client.sendMessage(command);
         client.receiveMessage();
