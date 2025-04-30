@@ -92,7 +92,7 @@ public class ClientHandler implements Runnable {
                         response.addProperty("reason", "No such key");
                         break;
                     }
-                    response.addProperty("response", "OK");;
+                    response.addProperty("response", "OK");
                     response.add("value", value);
                 }
                 case "delete" -> {
@@ -108,7 +108,7 @@ public class ClientHandler implements Runnable {
                     } finally {
                         writeLock.unlock();
                     }
-                    response.addProperty("response", "OK");;
+                    response.addProperty("response", "OK");
                 }
             }
             sendMessage(response.toString());
