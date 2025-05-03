@@ -1,7 +1,9 @@
 package org.example;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class UI {
@@ -11,6 +13,27 @@ public class UI {
         ADD
     }
 
+    private enum DaysOfWeek {
+        MONDAY ("Monday"),
+        TUESDAY ("Tuesday"),
+        WEDNESDAY ("Wednesday"),
+        THURSDAY ("Thursday"),
+        FRIDAY ("Friday"),
+        SATURDAY ("Saturday"),
+        SUNDAY ("Sunday");
+
+        private final String title;
+
+        DaysOfWeek(String title) {
+            this.title = title;
+        }
+
+        @Override
+        public String toString() {
+            return title;
+        }
+    }
+
     static final String JDBC_URL = "jdbc:postgresql://localhost:1337/meals_db?currentSchema=public&user=postgres&password=010204";
     private static Scanner sc = new Scanner(System.in);
     private boolean flag = true;
@@ -18,15 +41,16 @@ public class UI {
     public void start() {
 
         try {
-
             Connection connection = DriverManager.getConnection(JDBC_URL);
 
             while (flag) {
 
-                System.out.println("What would you like to do (add, show, exit)?");
+                System.out.println("What would you like to do (add, show, plan, list plan, exit)?");
                 switch (sc.nextLine()) {
                     case "add" -> addMeal(connection);
                     case "show" -> showMeals(connection);
+                    case "plan" -> makePlan(connection);
+                    case "list plan" -> listPlan(connection);
                     case "exit" -> {
                         System.out.println("Bye!");
                         flag = false;
@@ -41,6 +65,46 @@ public class UI {
             e.printStackTrace();
         }
 
+    }
+
+    private void listPlan(Connection connection) {
+    }
+
+    private void makePlan(Connection connection) throws SQLException {
+
+        DaysOfWeek[] daysOfWeek = DaysOfWeek.values();
+        String breakfast;
+        String lunch;
+        String dinner;
+        Statement statement = connection.createStatement();
+        List<String> meals = new ArrayList<>();
+
+        for (int i = 0; i < 7; i++) {
+            System.out.println(daysOfWeek[i]);
+            ResultSet rs = statement.executeQuery("SELECT name AS meal FROM meals WHERE category = 'breakfast'");
+            while (rs.next()) {
+                System.out.println(rs.getString("meal"));
+                meals.add(rs.getString("meal"));
+            }
+            System.out.println("Choose the breakfast for " + daysOfWeek[i] + " from the list above:");
+            breakfast = inputMeal(meals);
+
+            meals.clear();
+            rs = statement.executeQuery("SELECT name AS meal FROM meals WHERE category = 'lunch'");
+            while (rs.next()) {
+                System.out.println(rs.getString("meal"));
+                meals.add(rs.getString("meal"));
+            }
+            lunch = inputMeal(meals);
+
+            meals.clear();
+            rs = statement.executeQuery("SELECT name AS meal FROM meals WHERE category = 'dinner'");
+            while (rs.next()) {
+                System.out.println(rs.getString("meal"));
+                meals.add(rs.getString("meal"));
+            }
+            dinner = inputMeal(meals);
+        }
     }
 
     private void showMeals(Connection connection) throws SQLException {
