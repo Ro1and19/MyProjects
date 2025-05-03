@@ -6,6 +6,11 @@ import java.util.Scanner;
 
 public class UI {
 
+    private enum Command {
+        SHOW,
+        ADD
+    }
+
     static final String JDBC_URL = "jdbc:postgresql://localhost:1337/meals_db?currentSchema=public&user=postgres&password=010204";
     private static Scanner sc = new Scanner(System.in);
     private boolean flag = true;
@@ -40,9 +45,11 @@ public class UI {
 
     private void showMeals(Connection connection) throws SQLException {
 
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("SELECT category, name, ingredient, meals.meal_id AS id FROM meals " +
-                                                  "JOIN ingredients on meals.meal_id = ingredients.meal_id");
+        PreparedStatement statement = connection.prepareStatement("SELECT category, name, ingredient, meals.meal_id AS id FROM meals " +
+                                                                      "JOIN ingredients on meals.meal_id = ingredients.meal_id " +
+                                                                      "WHERE category = ?");
+        statement.setString(1, inputCategory(Command.SHOW));
+        ResultSet rs = statement.executeQuery();
 
         if (!rs.isBeforeFirst()) {
             System.out.println("No meals saved. Add a meal first.");
@@ -69,7 +76,7 @@ public class UI {
 
     private void addMeal(Connection connection) throws SQLException {
 
-        String category = inputCategory();
+        String category = inputCategory(Command.ADD);
         String name = inputName();
         String[] ingredients = inputIngredients();
 
@@ -121,9 +128,12 @@ public class UI {
         return input;
     }
 
-    private String inputCategory() {
+    private String inputCategory(Command command) {
 
-        System.out.println("Which meal do you want to add (breakfast, lunch, dinner)?");
+        if (command == Command.ADD)
+            System.out.println("Which meal do you want to add (breakfast, lunch, dinner)?");
+        else if (command == Command.SHOW)
+            System.out.println("Which category do you want to print (breakfast, lunch, dinner)?");
         String input = sc.nextLine();
         while (!input.matches("(breakfast|lunch|dinner)")) {
             System.out.println("Wrong meal category! Choose from: breakfast, lunch, dinner.");
