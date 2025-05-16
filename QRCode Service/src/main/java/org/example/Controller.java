@@ -1,5 +1,10 @@
 package org.example;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +26,15 @@ public class Controller {
     }
 
     @GetMapping("/api/qrcode")
-    public ResponseEntity<?> returnIMAGE(@RequestParam int size, @RequestParam String type) {
+    public ResponseEntity<?> returnIMAGE(@RequestParam int size,
+                                         @RequestParam String type,
+                                         @RequestParam String contents) {
         Map<String, String> response = new HashMap<>();
+
+        if (contents == null || contents.isEmpty()) {
+            response.put("error", "Contents cannot be null or blank");
+            return ResponseEntity.badRequest().body(response);
+        }
 
         if (size > 500 || size < 100) {
             response.put("error", "Image size must be between 100 and 500 pixels");
@@ -34,15 +46,20 @@ public class Controller {
             return ResponseEntity.badRequest().body(response);
         }
 
-        BufferedImage image = createImage(size);
+        BufferedImage image = createImage(size, contents);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("image/"+type)).body(image);
     }
 
-    private static BufferedImage createImage(int size) {
-        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image.createGraphics();
-        g.setColor(Color.CYAN);
-        g.fillRect(0, 0, size, size);
+    private static BufferedImage createImage(int size, String contents) {
+
+        BufferedImage image = null;
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(contents, BarcodeFormat.QR_CODE, size, size);
+            image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
 
         return image;
     }
