@@ -1,4 +1,4 @@
-package com.example.Account_Service;
+package com.example.Account_Service.Model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

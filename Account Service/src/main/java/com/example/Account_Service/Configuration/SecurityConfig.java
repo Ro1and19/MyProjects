@@ -18,6 +18,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(matcherRegistry -> matcherRegistry
                         .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/ping").authenticated()
+                        .requestMatchers("/username").authenticated()
                         .requestMatchers("/user").hasAnyRole("USER")
                         .anyRequest().permitAll()
                 )

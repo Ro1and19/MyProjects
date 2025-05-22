@@ -1,5 +1,7 @@
-package com.example.Account_Service;
+package com.example.Account_Service.Service;
 
+import com.example.Account_Service.Model.User;
+import com.example.Account_Service.Model.UserAdapter;
 import com.example.Account_Service.Repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,4 +1,4 @@
-package com.example.Account_Service;
+package com.example.Account_Service.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

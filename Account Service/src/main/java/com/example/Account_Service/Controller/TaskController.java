@@ -1,11 +1,13 @@
 package com.example.Account_Service.Controller;
 
-import com.example.Account_Service.Repository.UserRepository;
-import com.example.Account_Service.User;
+import com.example.Account_Service.Model.User;
+import com.example.Account_Service.Service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TaskController {
 
-    private final UserRepository repository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserService userService;
 
-    TaskController(UserRepository repository,
-                   BCryptPasswordEncoder passwordEncoder) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
+    @GetMapping("/username")
+    public void username(@AuthenticationPrincipal UserDetails details) {
+        System.out.println(details.getUsername());
     }
 
     @GetMapping("/ping")
@@ -28,16 +29,10 @@ public class TaskController {
         return "cool";
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<User> get() {
-        return new ResponseEntity<>(repository.findById(1L).get(), HttpStatus.OK);
-    }
-
     @PostMapping("/api/auth/signup")
     public ResponseEntity<User> signup(@Valid @RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        repository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        User savedUser = userService.registerUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.OK);
     }
 
 }
