@@ -1,10 +1,13 @@
 package com.example.Account_Service.Model;
 
+import com.example.Account_Service.Validation.NotExists;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @JsonPropertyOrder({
         "id",
@@ -25,9 +28,11 @@ public class User {
     @NotBlank
     private String lastname;
     @NotBlank
+    @NotExists
     @Email(regexp = ".+@acme\\.com")
     private String email;
     @NotBlank
+    @Size(min = 12)
     private String password;
 
 

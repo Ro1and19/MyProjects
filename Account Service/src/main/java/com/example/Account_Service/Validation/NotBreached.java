@@ -9,9 +9,9 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EmailValidator.class)
-public @interface NotExists {
-    String message() default "Email already exists";
+@Constraint(validatedBy = PasswordValidator.class)
+public @interface NotBreached {
+    String message() default "The password is in the hacker's database!";
 
     Class[] groups() default {};
 

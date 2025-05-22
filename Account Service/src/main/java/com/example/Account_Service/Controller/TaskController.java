@@ -1,5 +1,6 @@
 package com.example.Account_Service.Controller;
 
+import com.example.Account_Service.Model.Password;
 import com.example.Account_Service.Model.User;
 import com.example.Account_Service.Service.UserService;
 import jakarta.validation.Valid;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 public class TaskController {
@@ -27,6 +30,12 @@ public class TaskController {
     @GetMapping("/ping")
     public String ping() {
         return "cool";
+    }
+
+    @PostMapping("api/auth/changepass")
+    public ResponseEntity<?> change(@Valid @RequestBody Password password) {
+        Map<String,String> response = userService.changePassword(password.getPassword());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/api/auth/signup")
