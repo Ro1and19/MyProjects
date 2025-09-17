@@ -2,7 +2,7 @@
 
 ## Description
 
-Develop a Java-based client-server application that enables you to store data on the server in JSON format. Practice parallelization for processing multiple requests to enhance your career prospects.
+Java-based client-server application that enables you to store data on the server in JSON format. Practice parallelization for processing multiple requests.
 
 ## Example
 
