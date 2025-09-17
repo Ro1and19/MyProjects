@@ -17,6 +17,7 @@ Server started!
 
 ### Starting the clients:
 
+```java
 > java Main -t set -k text -v "Hello World!"
 Client started!
 Sent: {"type":"set","key":"text","value":"Hello World!"}
@@ -98,3 +99,4 @@ Received:
 Client started!
 Sent: {"type":"exit"}
 Received: {"response":"OK"}
+```
