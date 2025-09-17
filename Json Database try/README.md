@@ -4,34 +4,95 @@
 
 Develop a Java-based client-server application that enables you to store data on the server in JSON format. Practice parallelization for processing multiple requests to enhance your career prospects.
 
-## Features
+## Example
 
-*   Feature 1
-*   Feature 2
-*   Feature 3
+The greater-than symbol followed by a space (> ) represents the user input. Note that it's not part of the input.
 
-## Technologies Used
+### Starting the server:
 
-*   Java [Version, e.g., 17]
-*   Maven / Gradle
-*   [Any other libraries, e.g., JUnit, Log4j, Jackson]
+> java Main
+Server started!
 
-## Installation
+### Starting the clients:
 
-1.  **Prerequisites:** Ensure you have Java JDK [Version] and Maven/Gradle installed on your system.
-2.  Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
-    ```
-3.  Build the project:
-    ```bash
-    mvn clean compile
-    ```
+> java Main -t set -k text -v "Hello World!"
+Client started!
+Sent: {"type":"set","key":"text","value":"Hello World!"}
+Received: {"response":"OK"}
 
-## How to Run
+> java Main -in setFile.json 
+Client started!
+Sent:
+{
+   "type":"set",
+   "key":"person",
+   "value":{
+      "name":"Elon Musk",
+      "car":{
+         "model":"Tesla Roadster",
+         "year":"2018"
+      },
+      "rocket":{
+         "name":"Falcon 9",
+         "launches":"87"
+      }
+   }
+}
+Received: {"response":"OK"}
 
-To execute the program, run:
+> java Main -in getFile.json 
+Client started!
+Sent: {"type":"get","key":["person","name"]}
+Received: {"response":"OK","value":"Elon Musk"}
 
-```bash
-mvn exec:java -Dexec.mainClass="com.yourcompany.main.Main"
+> java Main -in updateFile.json 
+Client started!
+Sent: {"type":"set","key":["person","rocket","launches"],"value":"88"}
+Received: {"response":"OK"}
+
+> java Main -in secondGetFile.json 
+Client started!
+Sent: {"type":"get","key":["person"]}
+Received:
+{
+   "response":"OK",
+   "value":{
+      "name":"Elon Musk",
+      "car":{
+         "model":"Tesla Roadster",
+         "year":"2018"
+      },
+      "rocket":{
+         "name":"Falcon 9",
+         "launches":"88"
+      }
+   }
+}
+
+> java Main -in deleteFile.json 
+Client started!
+Sent: {"type":"delete","key":["person","car","year"]}
+Received: {"response":"OK"}
+
+> java Main -in secondGetFile.json 
+Client started!
+Sent: {"type":"get","key":["person"]}
+Received:
+{
+   "response":"OK",
+   "value":{
+      "name":"Elon Musk",
+      "car":{
+         "model":"Tesla Roadster"
+      },
+      "rocket":{
+         "name":"Falcon 9",
+         "launches":"88"
+      }
+   }
+}
+
+> java Main -t exit 
+Client started!
+Sent: {"type":"exit"}
+Received: {"response":"OK"}
