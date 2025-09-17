@@ -10,14 +10,14 @@ The greater-than symbol followed by a space (> ) represents the user input. Note
 
 ### Starting the server:
 
-```java
+```
 > java Main
 Server started!
 ```
 
 ### Starting the clients:
 
-```java
+```
 > java Main -t set -k text -v "Hello World!"
 Client started!
 Sent: {"type":"set","key":"text","value":"Hello World!"}
