@@ -10,8 +10,10 @@ The greater-than symbol followed by a space (> ) represents the user input. Note
 
 ### Starting the server:
 
+```java
 > java Main
 Server started!
+```
 
 ### Starting the clients:
 
