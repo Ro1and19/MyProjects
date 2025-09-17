@@ -13,44 +13,22 @@ public class UI {
         ADD
     }
 
-    private enum DaysOfWeek {
-        MONDAY ("Monday"),
-        TUESDAY ("Tuesday"),
-        WEDNESDAY ("Wednesday"),
-        THURSDAY ("Thursday"),
-        FRIDAY ("Friday"),
-        SATURDAY ("Saturday"),
-        SUNDAY ("Sunday");
-
-        private final String title;
-
-        DaysOfWeek(String title) {
-            this.title = title;
-        }
-
-        @Override
-        public String toString() {
-            return title;
-        }
-    }
-
-    static final String JDBC_URL = "jdbc:postgresql://localhost:1337/meals_db?currentSchema=public&user=postgres&password=010204";
+    private static final String JDBC_URL = "jdbc:postgresql://localhost:1337/meals_db?currentSchema=public&user=postgres&password=010204";
+    private static Connection connection;
     private static Scanner sc = new Scanner(System.in);
     private boolean flag = true;
 
     public void start() {
 
         try {
-            Connection connection = DriverManager.getConnection(JDBC_URL);
+            connection = DriverManager.getConnection(JDBC_URL);
 
             while (flag) {
 
-                System.out.println("What would you like to do (add, show, plan, list plan, exit)?");
+                System.out.println("What would you like to do (add, show, exit)?");
                 switch (sc.nextLine()) {
-                    case "add" -> addMeal(connection);
-                    case "show" -> showMeals(connection);
-                    case "plan" -> makePlan(connection);
-                    case "list plan" -> listPlan(connection);
+                    case "add" -> addMeal();
+                    case "show" -> showMeals();
                     case "exit" -> {
                         System.out.println("Bye!");
                         flag = false;
@@ -67,47 +45,7 @@ public class UI {
 
     }
 
-    private void listPlan(Connection connection) {
-    }
-
-    private void makePlan(Connection connection) throws SQLException {
-
-        DaysOfWeek[] daysOfWeek = DaysOfWeek.values();
-        String breakfast;
-        String lunch;
-        String dinner;
-        Statement statement = connection.createStatement();
-        List<String> meals = new ArrayList<>();
-
-        for (int i = 0; i < 7; i++) {
-            System.out.println(daysOfWeek[i]);
-            ResultSet rs = statement.executeQuery("SELECT name AS meal FROM meals WHERE category = 'breakfast'");
-            while (rs.next()) {
-                System.out.println(rs.getString("meal"));
-                meals.add(rs.getString("meal"));
-            }
-            System.out.println("Choose the breakfast for " + daysOfWeek[i] + " from the list above:");
-            breakfast = inputMeal(meals);
-
-            meals.clear();
-            rs = statement.executeQuery("SELECT name AS meal FROM meals WHERE category = 'lunch'");
-            while (rs.next()) {
-                System.out.println(rs.getString("meal"));
-                meals.add(rs.getString("meal"));
-            }
-            lunch = inputMeal(meals);
-
-            meals.clear();
-            rs = statement.executeQuery("SELECT name AS meal FROM meals WHERE category = 'dinner'");
-            while (rs.next()) {
-                System.out.println(rs.getString("meal"));
-                meals.add(rs.getString("meal"));
-            }
-            dinner = inputMeal(meals);
-        }
-    }
-
-    private void showMeals(Connection connection) throws SQLException {
+    private void showMeals() throws SQLException {
 
         PreparedStatement statement = connection.prepareStatement("SELECT category, name, ingredient, meals.meal_id AS id FROM meals " +
                                                                       "JOIN ingredients on meals.meal_id = ingredients.meal_id " +
@@ -138,7 +76,7 @@ public class UI {
 
     }
 
-    private void addMeal(Connection connection) throws SQLException {
+    private void addMeal() throws SQLException {
 
         String category = inputCategory(Command.ADD);
         String name = inputName();
@@ -207,7 +145,9 @@ public class UI {
         return input;
     }
 
-    private void createTables(Statement statement) throws SQLException {
+    private void createTables() throws SQLException {
+
+        Statement statement = connection.createStatement();
 
         statement.execute("CREATE TABLE IF NOT EXISTS meals(" +
                 "meal_id SERIAL PRIMARY KEY," +
