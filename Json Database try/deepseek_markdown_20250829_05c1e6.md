@@ -1,5 +1,4 @@
 # JSON Database with Java
-A short one-sentence description of your project.
 
 ## Description
 
