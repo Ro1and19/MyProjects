@@ -1,38 +1,95 @@
 # JSON Database with Java
-A short one-sentence description of your project.
 
 ## Description
 
-Develop a Java-based client-server application that enables you to store data on the server in JSON format. Practice parallelization for processing multiple requests to enhance your career prospects.
+Aside from creating a practically useful tool, you will learn about relational databases, SQL, file operations, and arrays.
 
-## Features
+## Examples
 
-*   Feature 1
-*   Feature 2
-*   Feature 3
+The greater-than symbol followed by a space (> ) represents the user input. Note that it's not part of the input.
 
-## Technologies Used
+### Example 1: standard execution
 
-*   Java [Version, e.g., 17]
-*   Maven / Gradle
-*   [Any other libraries, e.g., JUnit, Log4j, Jackson]
+```
+What would you like to do (add, show, exit)?
+> add
+Which meal do you want to add (breakfast, lunch, dinner)?
+> lunch
+Input the meal's name:
+> salad
+Input the ingredients:
+> lettuce, tomato, onion, cheese, olives
+The meal has been added!
+What would you like to do (add, show, exit)?
+> add
+Which meal do you want to add (breakfast, lunch, dinner)?
+> lunch
+Input the meal's name:
+> omelette
+Input the ingredients:
+> eggs, milk, cheese
+The meal has been added!
+What would you like to do (add, show, exit)?
+> add
+Which meal do you want to add (breakfast, lunch, dinner)?
+> breakfast
+Input the meal's name:
+> oatmeal
+Input the ingredients:
+> oats, milk, banana, peanut butter
+The meal has been added!
+What would you like to do (add, show, exit)?
+> show
+Which category do you want to print (breakfast, lunch, dinner)?
+> breakfast
+Category: breakfast
+Name: oatmeal
+Ingredients:
+oats
+milk
+banana
+peanut butter
+What would you like to do (add, show, exit)?
+> show
+Which category do you want to print (breakfast, lunch, dinner)?
+> lunch
+Category: lunch
 
-## Installation
+Name: salad
+Ingredients:
+lettuce
+tomato
+onion
+cheese
+olives
 
-1.  **Prerequisites:** Ensure you have Java JDK [Version] and Maven/Gradle installed on your system.
-2.  Clone the repository:
-    ```bash
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
-    ```
-3.  Build the project:
-    ```bash
-    mvn clean compile
-    ```
+Name: omelette
+Ingredients:
+eggs
+milk
+cheese
 
-## How to Run
+What would you like to do (add, show, exit)?
+> exit
+Bye!
+```
 
-To execute the program, run:
+### Example 2: warnings during execution
 
-```bash
-mvn exec:java -Dexec.mainClass="com.yourcompany.main.Main"
+```
+What would you like to do (add, show, exit)?
+> show
+Which category do you want to print (breakfast, lunch, dinner)?
+> dinner
+No meals found.
+What would you like to do (add, show, exit)?
+> show
+Which category do you want to print (breakfast, lunch, dinner)?
+> brunch
+Wrong meal category! Choose from: breakfast, lunch, dinner.
+> dinner
+No meals found.
+What would you like to do (add, show, exit)?
+> exit
+Bye!
+```
