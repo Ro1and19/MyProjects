@@ -20,7 +20,7 @@
             <artifactId>maven-plugin-api</artifactId>
             <version>3.9.9</version>
             <scope>provided</scope>
-        </dependency> 
+        </dependency>
 
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
